@@ -1,0 +1,138 @@
+$delay: 0s;
+.messages-container {
+
+  & .messages {
+    display: flex;
+    flex-direction: column;
+    height: 258px;
+    width: 169px;
+    background-color: #EBF7FF;
+    overflow-y: scroll;
+    position: relative;
+
+    & .pinned-message {
+      z-index: 1;
+      min-height: 27px;
+      max-height: 27px;
+      width: 169px;
+      background-color: white;
+      position: sticky;
+      top: 0;
+      padding: 2px 4px;
+
+      & img {
+        margin-top: 4px;
+        margin-right: 2px;
+      }
+    }
+
+    & .new-message {
+      cursor: pointer;
+      padding: 4px 2px;
+      position: sticky;
+      bottom: 35px;
+      left: 55px;
+      font-size: 5px;
+      border-radius: 16px;
+      background-color: white;
+      height: 15px;
+      width: 40px;
+
+      &:hover {
+        background-color: #757575;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE and Edge */
+    -ms-overflow-style: none;
+
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+
+    //& .received{
+    //  animation: fadeIn 0.5s ease forwards;
+    //  opacity: 0;
+    //  animation-delay: calc(0.5s * (var(--index) + 1)); // Apply the delay to all messages
+    //  $delay: $delay + 2s; // Increment the delay for the next message
+    //}
+
+
+    & .received-msg {
+
+
+
+      background-color: white;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+
+      &:before {
+        content: "";
+        width: 0;
+        height: 0;
+        position: absolute;
+        border-left: 15px solid transparent;
+        border-right: 10px solid white;
+        border-top: 8px solid white;
+        border-bottom: 0 solid transparent;
+        left: -5px;
+        top: 0;
+      }
+    }
+
+    & .delay-msg{
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+      animation-delay: calc(0.5s * (var(--index) + 1)); // Apply the delay to all messages
+      $delay: $delay + 2s; // Increment the delay for the next message
+    }
+
+
+    & .sent-msg {
+      border-radius: 16px;
+      background-color: #D5FFC5;
+    }
+    & .msg-box {
+      position: relative;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 10px;
+      min-width: 110px;
+      max-width: 155px;
+      //width: 110px;
+      padding: 8px;
+      display: flex;
+      gap: 2px;
+      flex-direction: column;
+      & .msg{
+        white-space: pre-wrap;
+      }
+
+      & .msg-time {
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 7px;
+        color: #BABCBE;
+        align-self: end;
+        display: flex;
+        //width: 100%;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+

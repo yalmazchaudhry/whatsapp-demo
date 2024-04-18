@@ -1,0 +1,67 @@
+.chat-box-container{
+  background-color:#EBF7FF;
+  position: absolute;
+  bottom: 0;
+  width: 169px;
+
+  & .chat-input{
+    position: relative;
+
+    & .emoji-btn{
+      z-index: 1;
+      top: 5px;
+      position: absolute;
+      left: 3px;
+    }
+
+    & .attachment-btn{
+      z-index: 1;
+      top: 5px;
+      position: absolute;
+      left: 105px;
+    }
+    & .on-input{
+      left: 125px !important;
+    }
+    & .camera-btn{
+      z-index: 1;
+      top: 5px;
+      position: absolute;
+      left: 120px;
+    }
+    & input{
+      padding-right: 20px;
+      padding-left: 20px;
+      position: relative;
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      height: 21px;
+      caret-color: #BABCBE;
+    }
+
+    & input::placeholder{
+      font-family: "Roboto", sans-serif;
+      position: absolute;
+      top: 3px;
+      left: 20px;
+      font-size: 11px;
+      font-weight: 400;
+      font-style: normal;
+      color: #BABCBE;
+    }
+
+    & input:focus{
+      outline: none;
+    }
+  }
+
+
+
+  & .mic-btn{
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+  }
+}
