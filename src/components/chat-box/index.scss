@@ -8,20 +8,20 @@
     position: relative;
 
     & .emoji-btn{
+      bottom: 10px;
       z-index: 1;
-      top: 5px;
       position: absolute;
-      left: 3px;
+      left: 5px;
     }
 
     & .attachment-btn{
       z-index: 1;
-      top: 5px;
+      bottom: 10px;
       position: absolute;
       left: 105px;
     }
     & .on-input{
-      left: 125px !important;
+      left: 124px !important;
     }
     & .camera-btn{
       z-index: 1;
@@ -29,7 +29,7 @@
       position: absolute;
       left: 120px;
     }
-    & input{
+    & textarea{
       padding-right: 20px;
       padding-left: 20px;
       position: relative;
@@ -38,9 +38,11 @@
       border-radius: 16px;
       height: 21px;
       caret-color: #BABCBE;
+      resize: none;
+      overflow-y: scroll;
     }
 
-    & input::placeholder{
+    & textarea::placeholder{
       font-family: "Roboto", sans-serif;
       position: absolute;
       top: 3px;
@@ -51,7 +53,7 @@
       color: #BABCBE;
     }
 
-    & input:focus{
+    & textarea:focus{
       outline: none;
     }
   }

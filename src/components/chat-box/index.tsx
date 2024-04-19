@@ -3,13 +3,17 @@ import attachment from '../../assets/icons/attachment.png';
 import camera from '../../assets/icons/camera.png';
 import send from '../../assets/icons/send.png';
 import mic from '../../assets/icons/mic.png';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './index.scss';
+import useAutosizeTextArea from '../../hooks/useAutoSizeTextArea.ts';
 interface Props {
   onSendMessage: (message: string) => void;
+  onTextAreaHeightChange: (height: string) => void;
 }
-function ChatBox({ onSendMessage }: Props) {
+function ChatBox({ onSendMessage, onTextAreaHeightChange }: Props) {
   const [message, setMessage] = useState<string>('');
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  useAutosizeTextArea(textAreaRef.current, message, onTextAreaHeightChange, 40);
 
   const sendMessage = () => {
     if (message.trim() !== '') {
@@ -29,10 +33,11 @@ function ChatBox({ onSendMessage }: Props) {
             width={10}
             height={10}
           />
-          <input
+          <textarea
+            ref={textAreaRef}
+            className="hide-scrollbar"
             value={message}
             placeholder="Type a message"
-            type="text-box"
             onChange={(event) => setMessage(event.target.value)}
             name="message"
           />
