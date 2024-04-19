@@ -1,6 +1,8 @@
 import { Message } from '../../types/common.ts';
 import pin from '../../assets/icons/pin.png';
 import './index.scss';
+import { useNavigate } from 'react-router-dom';
+import Rating from '../rating';
 
 interface Props {
   messages: Message[];
@@ -16,6 +18,7 @@ function Messages({
   onGetPinnedMessagePage,
 }: Props) {
   const pinnedMessage = messages.find((message: Message) => message.pinned);
+  const navigate = useNavigate();
   const getPinnedMessagePage = () => {
     onGetPinnedMessagePage();
   };
@@ -51,11 +54,53 @@ function Messages({
                   <div
                     className={`msg-box ml-8 mr-8 ${item.type === 'sent' ? 'sent-msg' : 'received-msg'}`}
                   >
-                    {/*style={{ animationDelay: `${index * 0.2}s` }}*/}
-                    <span
-                      className="msg montserrat-regular text-10"
-                      dangerouslySetInnerHTML={{ __html: item.msg }}
-                    ></span>
+                    {item.parts.map((message, index) =>
+                      message.type === 'text' ? (
+                        <span
+                          key={index}
+                          className="msg montserrat-regular text-10"
+                          style={message.style}
+                        >
+                          {message.text}
+                        </span>
+                      ) : message.type === 'link' ? (
+                        <a
+                          key={index}
+                          className="msg montserrat-regular text-10"
+                          style={message.style}
+                          href={message.link}
+                          target="_blank"
+                        >
+                          {message.text}
+                        </a>
+                      ) : message.type === 'button' ? (
+                        <button type="button" style={message.btn?.style}>
+                          {message.btn?.link ? (
+                            <span
+                              style={message.btn.link.style}
+                              onClick={() =>
+                                message.btn &&
+                                message.btn.link &&
+                                navigate(message.btn.link.link)
+                              }
+                            >
+                              {message.btn.text}
+                            </span>
+                          ) : (
+                            // <a
+                            //   className="msg montserrat-regular text-10"
+                            //   href={message.btn.link.link}
+                            //   style={message.btn.link.style}
+                            // >
+                            //   {message.btn.text}
+                            // </a>
+                            message.btn?.text
+                          )}
+                        </button>
+                      ) : message.type === 'rating' ? (
+                        <Rating />
+                      ) : null,
+                    )}
                     <span className="msg-time">5:20pm</span>
                   </div>
                 </div>

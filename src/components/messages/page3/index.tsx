@@ -2,41 +2,90 @@ import '../index.scss';
 import { Message } from '../../../types/common.ts';
 import { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
+import Rating from '../../rating';
+import { useNavigate } from 'react-router-dom';
 function Page3() {
   const MESSAGES: Message[] = [
     {
       type: 'received',
-      msg: "Hi there! I'm Alex, and I'm really passionate about addressing climate change. How about you?",
+      parts: [
+        {
+          type: 'text',
+          text: "Hi there! I'm Alex, and I'm really passionate about addressing climate change. How about you?",
+        },
+      ],
     },
+    // {
+    //   type: 'sent',
+    //   parts: [
+    //     {
+    //       type: 'text',
+    //       text:
+    //         "Hey, Alex. Nice to meet you. Well, I have some reservations about the whole climate change thing. I think it's overblown. \n" +
+    //         "What's your take?",
+    //     },
+    //   ],
+    // },
     {
-      type: 'sent',
-      msg:
-        "Hey, Alex. Nice to meet you. Well, I have some reservations about the whole climate change thing. I think it's overblown. \n" +
-        "What's your take?",
+      type: 'received',
+      parts: [
+        {
+          type: 'text',
+          text: "Thanks for being open to chat! So, here's my perspective: The scientific consensus is pretty clear that human activities, like burning fossil fuels, are causing global warming. The evidence is overwhelming. But I'm curious, what specifically makes you skeptical?",
+        },
+      ],
     },
     {
       type: 'received',
-      msg: "Thanks for being open to chat! So, here's my perspective: The scientific consensus is pretty clear that human activities, like burning fossil fuels, are causing global warming. The evidence is overwhelming. But I'm curious, what specifically makes you skeptical?",
-    },
-    {
-      type: 'received',
-      msg: '&#x1f44e;&#9734;&#9734;&#9734;&#9734;&#9734;&#128077; How respectfull is this chat?',
+      parts: [
+        {
+          type: 'rating',
+        },
+        {
+          type: 'text',
+          text: 'How respectfull is this chat?',
+        },
+      ],
     },
   ];
   const [messages, setMessages] = useState<Message[]>([]);
   const chatContainer = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const sendMessage = (message: string) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { type: 'sent', msg: message },
+      {
+        type: 'sent',
+        parts: [
+          {
+            type: 'text',
+            text: message,
+          },
+        ],
+      },
     ]);
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { type: 'received', msg: 'Dummy Message' },
-      ]);
-      scrollChatToEnd();
+    MESSAGES.forEach((message, index) => {
+      if (index !== 0) {
+        setTimeout(
+          () => {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                type: message.type,
+                parts: message.parts.map((part) => ({
+                  type: part.type,
+                  ...(part.text && { text: part.text }),
+                  ...(part.style && { style: part.style }),
+                  ...(part.btn && { btn: part.btn }),
+                })),
+              },
+            ]);
+            scrollChatToEnd();
+          },
+          1000 * (index + 1),
+        );
+      }
     });
   };
 
@@ -52,19 +101,26 @@ function Page3() {
 
   const getMessages = () => {
     MESSAGES.forEach((message, index) => {
-      setTimeout(
-        () => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {
-              type: message.type,
-              msg: message.msg,
-            },
-          ]);
-          scrollChatToEnd();
-        },
-        1000 * (index + 1),
-      );
+      if (index === 0) {
+        setTimeout(
+          () => {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                type: message.type,
+                parts: message.parts.map((part) => ({
+                  type: part.type,
+                  ...(part.text && { text: part.text }),
+                  ...(part.style && { style: part.style }),
+                  ...(part.btn && { btn: part.btn }),
+                })),
+              },
+            ]);
+            scrollChatToEnd();
+          },
+          1000 * (index + 1),
+        );
+      }
     });
   };
 
@@ -94,10 +150,53 @@ function Page3() {
                     <div
                       className={`msg-box ml-8 mr-8 delay-msg ${item.type === 'sent' ? 'sent-msg' : 'received-msg'}`}
                     >
-                      <span
-                        className="msg montserrat-regular text-10"
-                        dangerouslySetInnerHTML={{ __html: item.msg }}
-                      ></span>
+                      {item.parts.map((message, index) =>
+                        message.type === 'text' ? (
+                          <span
+                            key={index}
+                            className="msg montserrat-regular text-10"
+                            style={message.style}
+                          >
+                            {message.text}
+                          </span>
+                        ) : message.type === 'link' ? (
+                          <a
+                            key={index}
+                            className="msg montserrat-regular text-10"
+                            style={message.style}
+                            href={message.link}
+                            target="_blank"
+                          >
+                            {message.text}
+                          </a>
+                        ) : message.type === 'button' ? (
+                          <button type="button" style={message.btn?.style}>
+                            {message.btn?.link ? (
+                              <span
+                                style={message.btn.link.style}
+                                onClick={() =>
+                                  message.btn &&
+                                  message.btn.link &&
+                                  navigate(message.btn.link.link)
+                                }
+                              >
+                                {message.btn.text}
+                              </span>
+                            ) : (
+                              // <a
+                              //   className="msg montserrat-regular text-10"
+                              //   href={message.btn.link.link}
+                              //   style={message.btn.link.style}
+                              // >
+                              //   {message.btn.text}
+                              // </a>
+                              message.btn?.text
+                            )}
+                          </button>
+                        ) : message.type === 'rating' ? (
+                          <Rating />
+                        ) : null,
+                      )}
                       <span className="msg-time">5:20pm</span>
                     </div>
                   </div>

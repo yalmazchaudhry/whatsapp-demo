@@ -3,6 +3,7 @@ import { Message } from '../../../types/common.ts';
 import { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import { useNavigate } from 'react-router-dom';
+import Rating from '../../rating';
 function Page1() {
   const MESSAGES = [
     'Welcome! Submit your opinion and participate in a respectful controversy. Max. 600 characters. Question: What should be done about climate change?',
@@ -17,14 +18,19 @@ function Page1() {
   const sendMessage = (message: string) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { type: 'sent', msg: message },
+      { type: 'sent', parts: [{ text: message, type: 'text' }] },
     ]);
     setTimeout(() => {
       setMessages((prevMessages) => [
         ...prevMessages,
         {
           type: 'received',
-          msg: prevMessages.length === 3 ? MESSAGES[1] : MESSAGES[0],
+          parts: [
+            {
+              text: prevMessages.length === 3 ? MESSAGES[1] : MESSAGES[0],
+              type: 'text',
+            },
+          ],
         },
       ]);
       scrollChatToEnd();
@@ -76,10 +82,53 @@ function Page1() {
                     <div
                       className={`msg-box ml-8 mr-8 ${item.type === 'sent' ? 'sent-msg' : 'received-msg delay-msg'}`}
                     >
-                      <span
-                        className="msg montserrat-regular text-10"
-                        dangerouslySetInnerHTML={{ __html: item.msg }}
-                      ></span>
+                      {item.parts.map((message, index) =>
+                        message.type === 'text' ? (
+                          <span
+                            key={index}
+                            className="msg montserrat-regular text-10"
+                            style={message.style}
+                          >
+                            {message.text}
+                          </span>
+                        ) : message.type === 'link' ? (
+                          <a
+                            key={index}
+                            className="msg montserrat-regular text-10"
+                            style={message.style}
+                            href={message.link}
+                            target="_blank"
+                          >
+                            {message.text}
+                          </a>
+                        ) : message.type === 'button' ? (
+                          <button type="button" style={message.btn?.style}>
+                            {message.btn?.link ? (
+                              <span
+                                style={message.btn.link.style}
+                                onClick={() =>
+                                  message.btn &&
+                                  message.btn.link &&
+                                  navigate(message.btn.link.link)
+                                }
+                              >
+                                {message.btn.text}
+                              </span>
+                            ) : (
+                              // <a
+                              //   className="msg montserrat-regular text-10"
+                              //   href={message.btn.link.link}
+                              //   style={message.btn.link.style}
+                              // >
+                              //   {message.btn.text}
+                              // </a>
+                              message.btn?.text
+                            )}
+                          </button>
+                        ) : message.type === 'rating' ? (
+                          <Rating />
+                        ) : null,
+                      )}
                       <span className="msg-time">5:20pm</span>
                     </div>
                   </div>
