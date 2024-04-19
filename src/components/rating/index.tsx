@@ -12,14 +12,14 @@ function Rating() {
     <>
       <div className="flex items-center">
         <img
-          src={thumbUp}
-          alt="thumbUp"
+          src={thumbDown}
+          alt="thumbDown"
           height={11}
           width={13}
           className="cursor-pointer scale-hover-150"
-          onMouseEnter={() => setHover(5)}
-          onMouseLeave={() => setHover(0)}
-          onClick={() => setRating(5)}
+          onMouseEnter={() => setHover(-1)}
+          onMouseLeave={() => setHover(rating)}
+          onClick={() => setRating(0)}
         />
         <div className="mx-4">
           {[...Array(totalStars)].map((star, index) => {
@@ -51,14 +51,14 @@ function Rating() {
           })}
         </div>
         <img
-          src={thumbDown}
-          alt="thumbDown"
+          src={thumbUp}
+          alt="thumbUp"
           height={11}
           width={13}
           className="cursor-pointer scale-hover-150"
-          onMouseEnter={() => setHover(-1)}
-          onMouseLeave={() => setHover(rating)}
-          onClick={() => setRating(0)}
+          onMouseEnter={() => setHover(5)}
+          onMouseLeave={() => setHover(0)}
+          onClick={() => setRating(5)}
         />
       </div>
     </>
