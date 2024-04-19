@@ -24,29 +24,18 @@ function Rating() {
         <div className="mx-4">
           {[...Array(totalStars)].map((star, index) => {
             const currentRating = index + 1;
-
             return (
-              <label key={index} className="mx-2">
-                <input
-                  key={star}
-                  type="radio"
-                  name="rating"
-                  value={currentRating}
-                  onChange={() => setRating(currentRating)}
-                  className="d-none"
+              <span
+                key={star}
+                className="cursor-pointer text-16 mx-2"
+                onClick={() => setRating(currentRating)}
+                onMouseEnter={() => setHover(currentRating)}
+                onMouseLeave={() => setHover(0)}
+              >
+                <Star
+                  fill={currentRating <= (hover || rating) ? '#ffc107' : 'none'}
                 />
-                <span
-                  className="cursor-pointer text-16 "
-                  onMouseEnter={() => setHover(currentRating)}
-                  onMouseLeave={() => setHover(0)}
-                >
-                  <Star
-                    fill={
-                      currentRating <= (hover || rating) ? '#ffc107' : 'none'
-                    }
-                  />
-                </span>
-              </label>
+              </span>
             );
           })}
         </div>

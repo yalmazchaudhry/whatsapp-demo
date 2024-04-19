@@ -73,6 +73,7 @@ function Page2() {
   ];
   const [messages, setMessages] = useState<Message[]>([]);
   const chatContainer = useRef<HTMLDivElement>(null);
+  const [textAreaHeight, setTextAreaHeight] = useState<string>('');
   const navigate = useNavigate();
 
   const sendMessage = (message: string) => {
@@ -140,12 +141,19 @@ function Page2() {
 
   const pinnedMessage = messages.find((message: Message) => message.pinned);
 
+  const handleTextAreaHeightChange = (height: string) => {
+    if (textAreaHeight !== height) {
+      scrollChatToEnd();
+    }
+    setTextAreaHeight(height);
+  };
+
   return (
     <>
       <Header />
       <div className="parent">
         <div className="messages-container">
-          <div className="messages" ref={chatContainer}>
+          <div className="messages hide-scrollbar" ref={chatContainer}>
             {pinnedMessage && (
               <div className="pinned-message flex">
                 <img src={pin} alt="pin" width={6} height={6} className="m-4" />
@@ -165,10 +173,12 @@ function Page2() {
               (item, index) =>
                 !item.pinned && (
                   <div
-                    className={`flex flex-column mb-8 ${item.type === 'sent' ? 'items-end' : 'items-start'} ${index === 0 || (index === 1 && messages[0]?.pinned) ? 'mt-8' : ''} ${index === messages.length - 1 ? 'pb-20' : ''}`}
+                    className={`flex flex-column mb-8 ${item.type === 'sent' ? 'items-end' : 'items-start'} ${index === 0 || (index === 1 && messages[0]?.pinned) ? 'mt-8' : ''}`}
                     key={index}
                     style={
                       {
+                        paddingBottom:
+                          index === messages.length - 1 ? textAreaHeight : '',
                         '--index': !messages.some((message) => message.pinned)
                           ? 0
                           : index,
@@ -233,7 +243,10 @@ function Page2() {
             )}
           </div>
         </div>
-        <ChatBox onSendMessage={sendMessage} />
+        <ChatBox
+          onSendMessage={sendMessage}
+          onTextAreaHeightChange={handleTextAreaHeightChange}
+        />
       </div>
     </>
   );

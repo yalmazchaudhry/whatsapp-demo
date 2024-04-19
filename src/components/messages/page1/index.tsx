@@ -1,6 +1,6 @@
 import '../index.scss';
 import { Message } from '../../../types/common.ts';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import { useNavigate } from 'react-router-dom';
 import Rating from '../../rating';
@@ -14,6 +14,7 @@ function Page1() {
   const [messages, setMessages] = useState<Message[]>([]);
   const chatContainer = useRef<HTMLDivElement>(null);
   const [showNewMsgBtn, setShowNewMsgBtn] = useState<boolean>(false);
+  const [textAreaHeight, setTextAreaHeight] = useState<string>('');
   const navigate = useNavigate();
 
   const sendMessage = (message: string) => {
@@ -61,20 +62,29 @@ function Page1() {
     navigate('/page2');
   };
 
+  const handleTextAreaHeightChange = (height: string) => {
+    if (textAreaHeight !== height) {
+      scrollChatToEnd();
+    }
+    setTextAreaHeight(height);
+  };
+
   return (
     <>
       <Header />
       <div className="parent">
         <div className="messages-container">
-          <div className="messages" ref={chatContainer}>
+          <div className="messages hide-scrollbar" ref={chatContainer}>
             {messages.map(
               (item, index) =>
                 !item.pinned && (
                   <div
-                    className={`flex flex-column mb-8 ${item.type === 'sent' ? 'items-end' : 'items-start'} ${index === 0 || (index === 1 && messages[0]?.pinned) ? 'mt-8' : ''} ${index === messages.length - 1 ? 'pb-20' : ''}`}
+                    className={`flex flex-column mb-8 ${item.type === 'sent' ? 'items-end' : 'items-start'} ${index === 0 || (index === 1 && messages[0]?.pinned) ? 'mt-8' : ''} `}
                     key={index}
                     style={
                       {
+                        paddingBottom:
+                          index === messages.length - 1 ? textAreaHeight : '',
                         '--index': !messages.some((message) => message.pinned)
                           ? 0
                           : index,
@@ -136,16 +146,21 @@ function Page1() {
                   </div>
                 ),
             )}
-            <div>{showNewMsgBtn}</div>
-            {showNewMsgBtn}
             {showNewMsgBtn && (
-              <div className="new-message" onClick={handleClick}>
+              <div
+                className="new-message"
+                onClick={handleClick}
+                style={{ bottom: textAreaHeight === '35px' ? '50px' : '35px' }}
+              >
                 New Messages
               </div>
             )}
           </div>
         </div>
-        <ChatBox onSendMessage={sendMessage} />
+        <ChatBox
+          onSendMessage={sendMessage}
+          onTextAreaHeightChange={handleTextAreaHeightChange}
+        />
       </div>
     </>
   );

@@ -25,7 +25,7 @@ function Messages({
   return (
     <>
       <div className="messages-container">
-        <div className="messages" ref={chatContainerRef}>
+        <div className="messages hide-scrollbar" ref={chatContainerRef}>
           {pinnedMessage && (
             <div className="pinned-message flex">
               <img src={pin} alt="pin" width={6} height={6} className="m-4" />
@@ -106,8 +106,6 @@ function Messages({
                 </div>
               ),
           )}
-          <div>{showNewMsgBtn}</div>
-          {showNewMsgBtn}
           {showNewMsgBtn &&
             !messages.some((message) => message.pinned) &&
             messages.length >= 4 && (
