@@ -4,19 +4,70 @@ import { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import { useNavigate } from 'react-router-dom';
 import pin from '../../../assets/icons/pin.png';
+import Rating from '../../rating';
 function Page2() {
   const MESSAGES: Message[] = [
     {
       type: 'received',
-      msg: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex do. consequat',
+      parts: [
+        {
+          type: 'text',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex do. consequat\n',
+        },
+        {
+          type: 'text',
+          text: '\nBeide haben bewertet. Chat jetzt moglich.\n\n',
+          style: { fontSize: '7px' },
+        },
+        {
+          type: 'button',
+          btn: {
+            text: 'CHAT STARTEN',
+            link: {
+              link: '/page3',
+              style: {
+                fontSize: '8px',
+                color: 'black',
+                textDecoration: 'none',
+              },
+            },
+            style: {
+              cursor: 'pointer',
+              display: 'flex',
+              height: '16px',
+              width: '78px',
+              backgroundColor: '#D5FFC5',
+              border: '0',
+              alignItems: 'center',
+              borderRadius: '3px',
+            },
+          },
+        },
+      ],
     },
     {
       type: 'received',
-      msg: 'Stop Eating Meat <br> &#x1f44e;&#9734;&#9734;&#9734;&#9734;&#9734;&#128077;',
+      parts: [
+        {
+          type: 'text',
+          text: 'Stop Eating Meat\n',
+        },
+        {
+          type: 'rating',
+        },
+      ],
     },
     {
       type: 'received',
-      msg: 'tax green house emission <br> &#x1f44e;&#9734;&#9734;&#9734;&#9734;&#9734;&#128077;',
+      parts: [
+        {
+          type: 'text',
+          text: 'tax green house emission\n',
+        },
+        {
+          type: 'rating',
+        },
+      ],
     },
   ];
   const [messages, setMessages] = useState<Message[]>([]);
@@ -26,12 +77,12 @@ function Page2() {
   const sendMessage = (message: string) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { type: 'sent', msg: message },
+      { type: 'sent', parts: [{ text: message, type: 'text' }] },
     ]);
     setTimeout(() => {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { type: 'received', msg: 'Dummy Message' },
+        { type: 'received', parts: [{ text: 'Dummy Message', type: 'text' }] },
       ]);
       scrollChatToEnd();
     });
@@ -52,7 +103,12 @@ function Page2() {
       {
         type: 'received',
         pinned: true,
-        msg: 'GEWINNER ANSEHEN LINK TO PROTOTYPE',
+        parts: [
+          {
+            type: 'link',
+            text: 'GEWINNER ANSEHEN LINK TO PROTOTYPE',
+          },
+        ],
       },
     ]);
     MESSAGES.forEach((message, index) => {
@@ -62,15 +118,15 @@ function Page2() {
             ...prevMessages,
             {
               type: message.type,
-              msg: message.msg,
+              parts: message.parts.map((part) => ({
+                type: part.type,
+                ...(part.text && { text: part.text }),
+                ...(part.style && { style: part.style }),
+                ...(part.btn && { btn: part.btn }),
+              })),
             },
           ]);
           scrollChatToEnd();
-          if (index + 1 === MESSAGES.length) {
-            setTimeout(() => {
-              navigate('/page3');
-            }, 5000);
-          }
         },
         1000 * (index + 1),
       );
@@ -120,10 +176,54 @@ function Page2() {
                     <div
                       className={`msg-box ml-8 mr-8 ${item.type === 'sent' ? 'sent-msg' : 'received-msg delay-msg'}`}
                     >
-                      <span
-                        className="msg montserrat-regular text-10"
-                        dangerouslySetInnerHTML={{ __html: item.msg }}
-                      ></span>
+                      {item.parts.map((message, index) =>
+                        message.type === 'text' ? (
+                          <span
+                            key={index}
+                            className="msg montserrat-regular text-10"
+                            style={message.style}
+                          >
+                            {message.text}
+                          </span>
+                        ) : message.type === 'link' ? (
+                          <a
+                            key={index}
+                            className="msg montserrat-regular text-10"
+                            style={message.style}
+                            href={message.link}
+                            target="_blank"
+                          >
+                            {message.text}
+                          </a>
+                        ) : message.type === 'button' ? (
+                          <button type="button" style={message.btn?.style}>
+                            {message.btn?.link ? (
+                              <span
+                                style={message.btn.link.style}
+                                onClick={() =>
+                                  message.btn &&
+                                  message.btn.link &&
+                                  navigate(message.btn.link.link)
+                                }
+                              >
+                                {message.btn.text}
+                              </span>
+                            ) : (
+                              // <a
+                              //   className="msg montserrat-regular text-10"
+                              //   href={message.btn.link.link}
+                              //   style={message.btn.link.style}
+                              // >
+                              //   {message.btn.text}
+                              // </a>
+                              message.btn?.text
+                            )}
+                          </button>
+                        ) : message.type === 'rating' ? (
+                          <Rating />
+                        ) : null,
+                      )}
+
                       <span className="msg-time">5:20pm</span>
                     </div>
                   </div>

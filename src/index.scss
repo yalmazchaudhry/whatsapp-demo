@@ -50,7 +50,6 @@ gap: 2px;
   gap: 10px;
 }
 
-
 .p-4{
   padding: 4px;
 }
@@ -72,6 +71,10 @@ gap: 2px;
   font-size: 10px;
 }
 
+.text-16{
+  font-size: 16px;
+}
+
 .text-8{
   font-size: 8px;
 }
@@ -83,13 +86,9 @@ gap: 2px;
   background-color: #FFFFFF;
 }
 
-
-
 .color-white{
   color: white;
 }
-
-
 
 .m-0{
   margin: 0;
@@ -111,6 +110,15 @@ gap: 2px;
   margin-right: 8px;
 }
 
+.mx-2{
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.mx-4{
+  margin-right: 4px;
+  margin-left: 4px;
+}
 
 .roboto-medium {
   font-family: "Roboto", sans-serif;

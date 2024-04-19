@@ -37,9 +37,10 @@ $delay: 0s;
       background-color: white;
       height: 15px;
       width: 40px;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 
       &:hover {
-        background-color: #757575;
+        background-color: lightgray;
       }
     }
 
@@ -53,18 +54,8 @@ $delay: 0s;
     /* Hide scrollbar for Firefox */
     scrollbar-width: none;
 
-    //& .received{
-    //  animation: fadeIn 0.5s ease forwards;
-    //  opacity: 0;
-    //  animation-delay: calc(0.5s * (var(--index) + 1)); // Apply the delay to all messages
-    //  $delay: $delay + 2s; // Increment the delay for the next message
-    //}
-
 
     & .received-msg {
-
-
-
       background-color: white;
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -90,7 +81,6 @@ $delay: 0s;
       $delay: $delay + 2s; // Increment the delay for the next message
     }
 
-
     & .sent-msg {
       border-radius: 16px;
       background-color: #D5FFC5;
@@ -103,12 +93,12 @@ $delay: 0s;
       font-size: 10px;
       min-width: 110px;
       max-width: 155px;
-      //width: 110px;
       padding: 8px;
       display: flex;
       gap: 2px;
       flex-direction: column;
       & .msg{
+        word-wrap: break-word;
         white-space: pre-wrap;
       }
 
@@ -120,7 +110,6 @@ $delay: 0s;
         color: #BABCBE;
         align-self: end;
         display: flex;
-        //width: 100%;
       }
     }
   }
