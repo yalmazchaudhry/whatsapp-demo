@@ -22,11 +22,11 @@ function Rating() {
           onClick={() => setRating(0)}
         />
         <div className="mx-4">
-          {[...Array(totalStars)].map((star, index) => {
+          {[...Array(totalStars)].map((_, index) => {
             const currentRating = index + 1;
             return (
               <span
-                key={star}
+                key={currentRating}
                 className="cursor-pointer text-16 mx-2"
                 onClick={() => setRating(currentRating)}
                 onMouseEnter={() => setHover(currentRating)}

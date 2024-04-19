@@ -1,6 +1,6 @@
 import '../index.scss';
 import { Message } from '../../../types/common.ts';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import { useNavigate } from 'react-router-dom';
 import pin from '../../../assets/icons/pin.png';
@@ -186,6 +186,7 @@ function Page2() {
                     }
                   >
                     <div
+                      key={index}
                       className={`msg-box ml-8 mr-8 ${item.type === 'sent' ? 'sent-msg' : 'received-msg delay-msg'}`}
                     >
                       {item.parts.map((message, index) =>
@@ -208,7 +209,11 @@ function Page2() {
                             {message.text}
                           </a>
                         ) : message.type === 'button' ? (
-                          <button type="button" style={message.btn?.style}>
+                          <button
+                            key={index}
+                            type="button"
+                            style={message.btn?.style}
+                          >
                             {message.btn?.link ? (
                               <span
                                 style={message.btn.link.style}
@@ -232,7 +237,7 @@ function Page2() {
                             )}
                           </button>
                         ) : message.type === 'rating' ? (
-                          <Rating />
+                          <Rating key={index} />
                         ) : null,
                       )}
 
