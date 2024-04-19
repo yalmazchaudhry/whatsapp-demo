@@ -42,7 +42,6 @@ function Page1() {
   const scrollChatToEnd = () => {
     setTimeout(() => {
       if (chatContainer.current) {
-        console.log(chatContainer.current);
         chatContainer.current.scrollTo({
           top: chatContainer.current.scrollHeight,
         });
