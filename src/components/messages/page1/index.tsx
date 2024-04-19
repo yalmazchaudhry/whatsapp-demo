@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import { useNavigate } from 'react-router-dom';
 import Rating from '../../rating';
+import Header from '../../header';
 function Page1() {
   const MESSAGES = [
     'Welcome! Submit your opinion and participate in a respectful controversy. Max. 600 characters. Question: What should be done about climate change?',
@@ -62,6 +63,7 @@ function Page1() {
 
   return (
     <>
+      <Header />
       <div className="parent">
         <div className="messages-container">
           <div className="messages" ref={chatContainer}>

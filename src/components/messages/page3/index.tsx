@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import Rating from '../../rating';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../header';
 function Page3() {
   const MESSAGES: Message[] = [
     {
@@ -130,6 +131,7 @@ function Page3() {
 
   return (
     <>
+      <Header />
       <div className="parent">
         <div className="messages-container">
           <div className="messages" ref={chatContainer}>

@@ -5,6 +5,7 @@ import ChatBox from '../../chat-box';
 import { useNavigate } from 'react-router-dom';
 import pin from '../../../assets/icons/pin.png';
 import Rating from '../../rating';
+import Header from '../../header';
 function Page2() {
   const MESSAGES: Message[] = [
     {
@@ -141,6 +142,7 @@ function Page2() {
 
   return (
     <>
+      <Header />
       <div className="parent">
         <div className="messages-container">
           <div className="messages" ref={chatContainer}>

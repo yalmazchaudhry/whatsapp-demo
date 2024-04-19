@@ -13,10 +13,10 @@ function Rating() {
       <div className="flex items-center">
         <img
           src={thumbUp}
-          alt=""
+          alt="thumbUp"
           height={11}
           width={13}
-          className="cursor-pointer"
+          className="cursor-pointer scale-hover-150"
           onMouseEnter={() => setHover(5)}
           onMouseLeave={() => setHover(0)}
           onClick={() => setRating(5)}
@@ -33,6 +33,7 @@ function Rating() {
                   name="rating"
                   value={currentRating}
                   onChange={() => setRating(currentRating)}
+                  className="d-none"
                 />
                 <span
                   className="cursor-pointer text-16 "
@@ -51,10 +52,10 @@ function Rating() {
         </div>
         <img
           src={thumbDown}
-          alt=""
+          alt="thumbDown"
           height={11}
           width={13}
-          className="cursor-pointer"
+          className="cursor-pointer scale-hover-150"
           onMouseEnter={() => setHover(-1)}
           onMouseLeave={() => setHover(rating)}
           onClick={() => setRating(0)}

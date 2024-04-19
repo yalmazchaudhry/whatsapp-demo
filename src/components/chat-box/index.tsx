@@ -23,7 +23,7 @@ function ChatBox({ onSendMessage }: Props) {
       <div className="chat-box-container flex items-center p-4 gap-2">
         <div className="chat-input">
           <img
-            className="emoji-btn"
+            className="emoji-btn cursor-pointer"
             src={emoji}
             alt="emoji"
             width={10}
@@ -41,7 +41,7 @@ function ChatBox({ onSendMessage }: Props) {
             alt="attachment"
             width={10}
             height={9}
-            className={`attachment-btn ${message.length > 0 ? 'on-input' : ''}`}
+            className={`attachment-btn cursor-pointer ${message.length > 0 ? 'on-input' : ''}`}
           />
           {message.length < 1 && (
             <img
@@ -49,7 +49,7 @@ function ChatBox({ onSendMessage }: Props) {
               alt="camera"
               width={10}
               height={9}
-              className="camera-btn"
+              className="camera-btn cursor-pointer"
             />
           )}
         </div>
