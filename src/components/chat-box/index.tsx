@@ -13,7 +13,7 @@ interface Props {
 function ChatBox({ onSendMessage, onTextAreaHeightChange }: Props) {
   const [message, setMessage] = useState<string>('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  useAutosizeTextArea(textAreaRef.current, message, onTextAreaHeightChange, 40);
+  useAutosizeTextArea(textAreaRef.current, message, onTextAreaHeightChange, 96);
 
   const sendMessage = () => {
     if (message.trim() !== '') {
@@ -30,8 +30,8 @@ function ChatBox({ onSendMessage, onTextAreaHeightChange }: Props) {
             className="emoji-btn cursor-pointer"
             src={emoji}
             alt="emoji"
-            width={10}
-            height={10}
+            width={20}
+            height={20}
           />
           <textarea
             ref={textAreaRef}
@@ -44,35 +44,37 @@ function ChatBox({ onSendMessage, onTextAreaHeightChange }: Props) {
           <img
             src={attachment}
             alt="attachment"
-            width={10}
-            height={9}
+            width={20}
+            height={20}
             className={`attachment-btn cursor-pointer ${message.length > 0 ? 'on-input' : ''}`}
           />
           {message.length < 1 && (
             <img
               src={camera}
               alt="camera"
-              width={10}
-              height={9}
+              width={20}
+              height={20}
               className="camera-btn cursor-pointer"
             />
           )}
         </div>
 
-        {message.length > 0 && (
-          <button
-            type="button"
-            className="mic-btn bg-primary cursor-pointer"
-            onClick={sendMessage}
-          >
-            <img src={send} alt="send" width={7.5} height={10} />
-          </button>
-        )}
-        {message.length < 1 && (
-          <button type="button" className="mic-btn bg-primary cursor-pointer">
-            <img src={mic} alt="mic" width={7.5} height={10} />
-          </button>
-        )}
+        <div className="flex pb-5 align-self-end">
+          {message.length > 0 && (
+            <button
+              type="button"
+              className="mic-btn bg-primary cursor-pointer"
+              onClick={sendMessage}
+            >
+              <img src={send} alt="send" width={10} height={13} />
+            </button>
+          )}
+          {message.length < 1 && (
+            <button type="button" className="mic-btn bg-primary cursor-pointer">
+              <img src={mic} alt="mic" width={10} height={13} />
+            </button>
+          )}
+        </div>
       </div>
     </>
   );

@@ -14,8 +14,8 @@ function Rating() {
         <img
           src={thumbDown}
           alt="thumbDown"
-          height={11}
-          width={13}
+          height={18}
+          width={20}
           className="cursor-pointer scale-hover-150"
           onMouseEnter={() => setHover(-1)}
           onMouseLeave={() => setHover(rating)}
@@ -42,8 +42,8 @@ function Rating() {
         <img
           src={thumbUp}
           alt="thumbUp"
-          height={11}
-          width={13}
+          height={18}
+          width={20}
           className="cursor-pointer scale-hover-150"
           onMouseEnter={() => setHover(5)}
           onMouseLeave={() => setHover(0)}

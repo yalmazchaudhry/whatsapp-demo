@@ -97,7 +97,7 @@ function Page1() {
                         message.type === 'text' ? (
                           <span
                             key={index}
-                            className="msg montserrat-regular text-10"
+                            className="msg montserrat-regular"
                             style={message.style}
                           >
                             {message.text}
@@ -105,7 +105,7 @@ function Page1() {
                         ) : message.type === 'link' ? (
                           <a
                             key={index}
-                            className="msg montserrat-regular text-10"
+                            className="msg montserrat-regular"
                             style={message.style}
                             href={message.link}
                             target="_blank"
@@ -149,7 +149,16 @@ function Page1() {
               <div
                 className="new-message"
                 onClick={handleClick}
-                style={{ bottom: textAreaHeight === '35px' ? '50px' : '35px' }}
+                style={{
+                  bottom:
+                    textAreaHeight === '96px'
+                      ? '112px'
+                      : textAreaHeight === '53px'
+                        ? '70px'
+                        : textAreaHeight === '75px'
+                          ? '90px'
+                          : '52px',
+                }}
               >
                 New Messages
               </div>

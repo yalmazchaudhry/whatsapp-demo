@@ -6,8 +6,8 @@ interface Props {
 function Star({ fill, height, width }: Props) {
   return (
     <svg
-      width={width ? width : 9}
-      height={height ? height : 9}
+      width={width ? width : 16}
+      height={height ? height : 16}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 9.87 9.39"
       fill={fill ? fill : 'none'}

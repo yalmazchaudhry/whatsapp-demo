@@ -4,21 +4,21 @@ $delay: 0s;
   & .messages {
     display: flex;
     flex-direction: column;
-    height: 258px;
-    width: 169px;
+    height: 550px;
+    width: 360px;
     background-color: #EBF7FF;
     overflow-y: scroll;
     position: relative;
 
     & .pinned-message {
       z-index: 1;
-      min-height: 27px;
-      max-height: 27px;
-      width: 169px;
+      min-height: 40px;
+      max-height: 40px;
+      width: 360px;
       background-color: white;
       position: sticky;
       top: 0;
-      padding: 2px 4px;
+      padding: 8px 4px;
 
       & img {
         margin-top: 4px;
@@ -28,15 +28,15 @@ $delay: 0s;
 
     & .new-message {
       cursor: pointer;
-      padding: 4px 2px;
+      padding: 4px 5px;
       position: sticky;
       bottom: 35px;
-      left: 55px;
-      font-size: 5px;
+      left: 39%;
+      font-size: 8px;
       border-radius: 16px;
       background-color: white;
-      height: 15px;
-      width: 40px;
+      height: 20px;
+      width: 65px;
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 
       &:hover {
@@ -76,17 +76,17 @@ $delay: 0s;
     }
     & .msg-box {
       position: relative;
-      font-family: "Montserrat", sans-serif;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 10px;
-      min-width: 110px;
-      max-width: 155px;
+      min-width: 155px;
+      max-width: 330px;
       padding: 8px;
       display: flex;
       gap: 2px;
       flex-direction: column;
       & .msg{
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 18px;
         word-wrap: break-word;
         white-space: pre-wrap;
       }
@@ -95,7 +95,7 @@ $delay: 0s;
         font-family: "Roboto", sans-serif;
         font-weight: 400;
         font-style: normal;
-        font-size: 7px;
+        font-size: 12px;
         color: #BABCBE;
         align-self: end;
         display: flex;

@@ -18,7 +18,7 @@ function Page2() {
         {
           type: 'text',
           text: '\nBeide haben bewertet. Chat jetzt moglich.\n\n',
-          style: { fontSize: '7px' },
+          style: { fontSize: '12px' },
         },
         {
           type: 'button',
@@ -27,7 +27,7 @@ function Page2() {
             link: {
               link: '/page3',
               style: {
-                fontSize: '8px',
+                fontSize: '12px',
                 color: 'black',
                 textDecoration: 'none',
               },
@@ -35,8 +35,8 @@ function Page2() {
             style: {
               cursor: 'pointer',
               display: 'flex',
-              height: '16px',
-              width: '78px',
+              height: '25px',
+              width: '105px',
               backgroundColor: '#D5FFC5',
               border: '0',
               alignItems: 'center',
@@ -156,13 +156,19 @@ function Page2() {
           <div className="messages hide-scrollbar" ref={chatContainer}>
             {pinnedMessage && (
               <div className="pinned-message flex">
-                <img src={pin} alt="pin" width={6} height={6} className="m-4" />
-                <span className="text-10 montserrat-regular font-bold">
+                <img
+                  src={pin}
+                  alt="pin"
+                  width={12}
+                  height={12}
+                  className="m-4"
+                />
+                <span className="text-18 montserrat-regular font-bold">
                   Pinned:{' '}
                   <a
                     href="https://starfish-app-nwpdz.ondigitalocean.app/"
                     target="_blank"
-                    className="montserrat-regular text-8"
+                    className="montserrat-regular text-16"
                   >
                     GEWINNER ANSEHEN
                   </a>
@@ -193,7 +199,7 @@ function Page2() {
                         message.type === 'text' ? (
                           <span
                             key={index}
-                            className="msg montserrat-regular text-10"
+                            className="msg montserrat-regular"
                             style={message.style}
                           >
                             {message.text}
@@ -201,7 +207,7 @@ function Page2() {
                         ) : message.type === 'link' ? (
                           <a
                             key={index}
-                            className="msg montserrat-regular text-10"
+                            className="msg montserrat-regular"
                             style={message.style}
                             href={message.link}
                             target="_blank"
