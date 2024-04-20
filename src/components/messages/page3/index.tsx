@@ -166,7 +166,7 @@ function Page3() {
                         message.type === 'text' ? (
                           <span
                             key={index}
-                            className="msg montserrat-regular text-10"
+                            className="msg montserrat-regular"
                             style={message.style}
                           >
                             {message.text}
@@ -174,7 +174,7 @@ function Page3() {
                         ) : message.type === 'link' ? (
                           <a
                             key={index}
-                            className="msg montserrat-regular text-10"
+                            className="msg montserrat-regular"
                             style={message.style}
                             href={message.link}
                             target="_blank"
