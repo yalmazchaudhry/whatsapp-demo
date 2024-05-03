@@ -16,17 +16,17 @@ function Page3() {
         },
       ],
     },
-    // {
-    //   type: 'sent',
-    //   parts: [
-    //     {
-    //       type: 'text',
-    //       text:
-    //         "Hey, Alex. Nice to meet you. Well, I have some reservations about the whole climate change thing. I think it's overblown. \n" +
-    //         "What's your take?",
-    //     },
-    //   ],
-    // },
+    {
+      type: 'sent',
+      parts: [
+        {
+          type: 'text',
+          text:
+            "Hey, Alex. Nice to meet you. Well, I have some reservations about the whole climate change thing. I think it's overblown. \n" +
+            "What's your take?",
+        },
+      ],
+    },
     {
       type: 'received',
       parts: [
@@ -67,28 +67,7 @@ function Page3() {
         ],
       },
     ]);
-    MESSAGES.forEach((message, index) => {
-      if (index !== 0) {
-        setTimeout(
-          () => {
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              {
-                type: message.type,
-                parts: message.parts.map((part) => ({
-                  type: part.type,
-                  ...(part.text && { text: part.text }),
-                  ...(part.style && { style: part.style }),
-                  ...(part.btn && { btn: part.btn }),
-                })),
-              },
-            ]);
-            scrollChatToEnd();
-          },
-          1000 * (index + 1),
-        );
-      }
-    });
+    scrollChatToEnd();
   };
 
   const scrollChatToEnd = () => {
@@ -103,26 +82,24 @@ function Page3() {
 
   const getMessages = () => {
     MESSAGES.forEach((message, index) => {
-      if (index === 0) {
-        setTimeout(
-          () => {
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              {
-                type: message.type,
-                parts: message.parts.map((part) => ({
-                  type: part.type,
-                  ...(part.text && { text: part.text }),
-                  ...(part.style && { style: part.style }),
-                  ...(part.btn && { btn: part.btn }),
-                })),
-              },
-            ]);
-            scrollChatToEnd();
-          },
-          1000 * (index + 1),
-        );
-      }
+      setTimeout(
+        () => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              type: message.type,
+              parts: message.parts.map((part) => ({
+                type: part.type,
+                ...(part.text && { text: part.text }),
+                ...(part.style && { style: part.style }),
+                ...(part.btn && { btn: part.btn }),
+              })),
+            },
+          ]);
+          scrollChatToEnd();
+        },
+        1000 * (index + 1),
+      );
     });
   };
 
