@@ -6,9 +6,43 @@ import { useNavigate } from 'react-router-dom';
 import Rating from '../../rating';
 import Header from '../../header';
 function Page1() {
-  const MESSAGES = [
-    'Welcome! Submit your opinion and participate in a respectful controversy. Max. 600 characters. Question: What should be done about climate change?',
-    'Thanks! Now please read the other opinions and rate how much you (dis)agree with them.',
+  const MESSAGES: Message[] = [
+    {
+      type: 'sent',
+      parts: [
+        {
+          type: 'text',
+          text: '#participate',
+        },
+      ],
+    },
+    {
+      type: 'received',
+      parts: [
+        {
+          type: 'text',
+          text: 'Welcome! Submit your opinion and participate in a respectful controversy. Max. 600 characters. Question: What should be done about climate change?',
+        },
+      ],
+    },
+    {
+      type: 'sent',
+      parts: [
+        {
+          type: 'text',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
+        },
+      ],
+    },
+    {
+      type: 'received',
+      parts: [
+        {
+          type: 'text',
+          text: 'Thanks! Now please read the other opinions and rate how much you (dis)agree with them.',
+        },
+      ],
+    },
   ];
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -22,21 +56,7 @@ function Page1() {
       ...prevMessages,
       { type: 'sent', parts: [{ text: message, type: 'text' }] },
     ]);
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          type: 'received',
-          parts: [
-            {
-              text: prevMessages.length === 3 ? MESSAGES[1] : MESSAGES[0],
-              type: 'text',
-            },
-          ],
-        },
-      ]);
-      scrollChatToEnd();
-    });
+    scrollChatToEnd();
   };
 
   const scrollChatToEnd = () => {
@@ -49,6 +69,29 @@ function Page1() {
     });
   };
 
+  const getMessages = () => {
+    MESSAGES.forEach((message, index) => {
+      setTimeout(
+        () => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              type: message.type,
+              parts: message.parts.map((part) => ({
+                type: part.type,
+                ...(part.text && { text: part.text }),
+                ...(part.style && { style: part.style }),
+                ...(part.btn && { btn: part.btn }),
+              })),
+            },
+          ]);
+          scrollChatToEnd();
+        },
+        1000 * (index + 1),
+      );
+    });
+  };
+
   useEffect(() => {
     if (messages.length >= 4) {
       setTimeout(() => {
@@ -56,6 +99,10 @@ function Page1() {
       }, 2000);
     }
   }, [messages]);
+
+  useEffect(() => {
+    getMessages();
+  }, []);
 
   const handleClick = () => {
     navigate('/page2');
@@ -160,7 +207,7 @@ function Page1() {
                           : '52px',
                 }}
               >
-                New Messages
+                Next
               </div>
             )}
           </div>

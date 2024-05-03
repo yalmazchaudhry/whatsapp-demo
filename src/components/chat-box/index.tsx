@@ -34,6 +34,7 @@ function ChatBox({ onSendMessage, onTextAreaHeightChange }: Props) {
             height={20}
           />
           <textarea
+            disabled={true}
             ref={textAreaRef}
             className="hide-scrollbar"
             value={message}

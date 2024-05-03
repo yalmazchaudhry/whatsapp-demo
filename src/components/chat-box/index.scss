@@ -59,6 +59,10 @@
     & textarea:focus{
       outline: none;
     }
+
+    & textarea:disabled{
+      background-color: white;
+    }
   }
 
   & .mic-btn{

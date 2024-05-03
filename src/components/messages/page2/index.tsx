@@ -81,13 +81,7 @@ function Page2() {
       ...prevMessages,
       { type: 'sent', parts: [{ text: message, type: 'text' }] },
     ]);
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { type: 'received', parts: [{ text: 'Dummy Message', type: 'text' }] },
-      ]);
-      scrollChatToEnd();
-    });
+    scrollChatToEnd();
   };
 
   const scrollChatToEnd = () => {
