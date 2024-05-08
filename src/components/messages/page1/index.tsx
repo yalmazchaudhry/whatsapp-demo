@@ -40,6 +40,9 @@ function Page1() {
         {
           type: 'text',
           text: 'Thanks! Now please read the other opinions and rate how much you (dis)agree with them.',
+          style: {
+            fontWeight: 'bold',
+          },
         },
       ],
     },
@@ -138,7 +141,7 @@ function Page1() {
                     }
                   >
                     <div
-                      className={`msg-box ml-8 mr-8 ${item.type === 'sent' ? 'sent-msg' : 'received-msg delay-msg'}`}
+                      className={`msg-box ml-8 mr-8 ${item.type === 'sent' ? 'sent-msg delay-msg' : 'received-msg delay-msg'}`}
                     >
                       {item.parts.map((message, index) =>
                         message.type === 'text' ? (

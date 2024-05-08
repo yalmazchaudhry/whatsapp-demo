@@ -158,13 +158,12 @@ function Page2() {
                   className="m-4"
                 />
                 <span className="text-18 montserrat-regular font-bold">
-                  Pinned:{' '}
                   <a
                     href="https://starfish-app-nwpdz.ondigitalocean.app/"
                     target="_blank"
-                    className="montserrat-regular text-16"
+                    className="montserrat-regular text-16 font-bold"
                   >
-                    GEWINNER ANSEHEN
+                    Visual overview and leading voices
                   </a>
                 </span>
               </div>
