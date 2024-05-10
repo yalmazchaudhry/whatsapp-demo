@@ -3,10 +3,19 @@ import './index.scss';
 import Star from '../icons/star.tsx';
 import thumbUp from '../../assets/icons/thumb-up.png';
 import thumbDown from '../../assets/icons/thumb-down.png';
-function Rating() {
+
+interface Props {
+  onRating: (rating: number, messageId: number) => void;
+  messageId: number;
+}
+function Rating({ onRating, messageId }: Props) {
   const [rating, setRating] = useState<number>(0);
   const [hover, setHover] = useState<number>(0);
   const totalStars: number = 5;
+  const handleRating = (rating: number) => {
+    setRating(rating);
+    onRating(rating, messageId);
+  };
 
   return (
     <>
@@ -19,7 +28,7 @@ function Rating() {
           className="cursor-pointer scale-hover-150"
           onMouseEnter={() => setHover(-1)}
           onMouseLeave={() => setHover(rating)}
-          onClick={() => setRating(0)}
+          onClick={() => handleRating(0)}
         />
         <div className="mx-4">
           {[...Array(totalStars)].map((_, index) => {
@@ -28,7 +37,7 @@ function Rating() {
               <span
                 key={currentRating}
                 className="cursor-pointer text-16 mx-2"
-                onClick={() => setRating(currentRating)}
+                onClick={() => handleRating(currentRating)}
                 onMouseEnter={() => setHover(currentRating)}
                 onMouseLeave={() => setHover(0)}
               >
@@ -47,7 +56,7 @@ function Rating() {
           className="cursor-pointer scale-hover-150"
           onMouseEnter={() => setHover(5)}
           onMouseLeave={() => setHover(0)}
-          onClick={() => setRating(5)}
+          onClick={() => handleRating(5)}
         />
       </div>
     </>

@@ -9,18 +9,25 @@ import Header from '../../header';
 function Page2() {
   const MESSAGES: Message[] = [
     {
+      id: 0,
       type: 'received',
+      rating: undefined,
       parts: [
         {
+          id: 0,
           type: 'text',
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex do. consequat\n',
         },
+        { id: 1, type: 'rating', hideOnRating: true },
         {
+          id: 2,
           type: 'text',
           text: '\nBeide haben bewertet. Chat jetzt moglich.\n\n',
           style: { fontSize: '12px' },
+          showOnRating: true,
         },
         {
+          id: 3,
           type: 'button',
           btn: {
             text: 'CHAT STARTEN',
@@ -43,31 +50,35 @@ function Page2() {
               borderRadius: '3px',
             },
           },
+          showOnRating: true,
         },
       ],
     },
     {
+      id: 1,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: 'Stop Eating Meat\n',
         },
         {
+          id: 1,
           type: 'rating',
         },
       ],
     },
     {
+      id: 2,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: 'tax green house emission\n',
         },
-        {
-          type: 'rating',
-        },
+        { id: 1, type: 'rating' },
       ],
     },
   ];
@@ -79,7 +90,11 @@ function Page2() {
   const sendMessage = (message: string) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { type: 'sent', parts: [{ text: message, type: 'text' }] },
+      {
+        id: prevMessages.length,
+        type: 'sent',
+        parts: [{ id: 0, text: message, type: 'text' }],
+      },
     ]);
     scrollChatToEnd();
   };
@@ -97,10 +112,12 @@ function Page2() {
   const getMessages = () => {
     setMessages([
       {
+        id: 0,
         type: 'received',
         pinned: true,
         parts: [
           {
+            id: 0,
             type: 'link',
             text: 'GEWINNER ANSEHEN LINK TO PROTOTYPE',
           },
@@ -113,12 +130,17 @@ function Page2() {
           setMessages((prevMessages) => [
             ...prevMessages,
             {
+              id: message.id,
               type: message.type,
+              rating: undefined,
               parts: message.parts.map((part) => ({
+                id: part.id,
                 type: part.type,
                 ...(part.text && { text: part.text }),
                 ...(part.style && { style: part.style }),
                 ...(part.btn && { btn: part.btn }),
+                showOnRating: part.showOnRating || false,
+                hideOnRating: part.hideOnRating || false,
               })),
             },
           ]);
@@ -140,6 +162,15 @@ function Page2() {
       scrollChatToEnd();
     }
     setTextAreaHeight(height);
+  };
+
+  const handleRating = (rating: number, messageId: number) => {
+    const updatedMessages = messages.map((message) =>
+      message.id === messageId ? { ...message, rating } : message,
+    );
+    setTimeout(() => {
+      setMessages(updatedMessages);
+    }, 1000);
   };
 
   return (
@@ -192,16 +223,40 @@ function Page2() {
                         message.type === 'text' ? (
                           <span
                             key={index}
-                            className="msg montserrat-regular"
-                            style={message.style}
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            } msg montserrat-regular`}
+                            style={{
+                              ...message.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                           >
                             {message.text}
                           </span>
                         ) : message.type === 'link' ? (
                           <a
                             key={index}
-                            className="msg montserrat-regular"
-                            style={message.style}
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            } msg montserrat-regular`}
+                            style={{
+                              ...message.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                             href={message.link}
                             target="_blank"
                           >
@@ -209,9 +264,22 @@ function Page2() {
                           </a>
                         ) : message.type === 'button' ? (
                           <button
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            }`}
                             key={index}
                             type="button"
-                            style={message.btn?.style}
+                            style={{
+                              ...message.btn?.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                           >
                             {message.btn?.link ? (
                               <span
@@ -236,7 +304,20 @@ function Page2() {
                             )}
                           </button>
                         ) : message.type === 'rating' ? (
-                          <Rating key={index} />
+                          <div
+                            key={index}
+                            className={
+                              message.hideOnRating && item.rating !== undefined
+                                ? 'hide-with-delay'
+                                : ''
+                            }
+                          >
+                            <Rating
+                              key={index}
+                              messageId={item.id}
+                              onRating={handleRating}
+                            />
+                          </div>
                         ) : null,
                       )}
 

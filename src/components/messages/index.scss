@@ -73,7 +73,19 @@ $delay: 0s;
       animation: fadeIn 0.5s ease forwards;
       opacity: 0;
       animation-delay: calc(0.5s * (var(--index) + 1)); // Apply the delay to all messages
-      $delay: $delay + 2s; // Increment the delay for the next message
+      //$delay: $delay + 2s; // Increment the delay for the next message
+    }
+
+    & .hide-with-delay{
+      opacity: 1;
+      animation: hideAnimation 0.5s ease forwards;
+      //animation-delay: calc(0.5s * (var(--index) + 0.9));
+    }
+
+    & .show-rating-with-delay{
+      animation: showMessage 0.5s ease forwards;
+      opacity: 0;
+      //animation-delay: calc(0.5s * (var(--index) + 1));
     }
 
     & .sent-msg {
@@ -116,6 +128,21 @@ $delay: 0s;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes hideAnimation {
+  to {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes showMessage {
+  to {
+    display: unset !important;
+    opacity: 1;
+
   }
 }
 

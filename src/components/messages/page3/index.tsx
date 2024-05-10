@@ -1,6 +1,6 @@
 import '../index.scss';
 import { Message } from '../../../types/common.ts';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatBox from '../../chat-box';
 import Rating from '../../rating';
 import { useNavigate } from 'react-router-dom';
@@ -8,18 +8,22 @@ import Header from '../../header';
 function Page3() {
   const MESSAGES: Message[] = [
     {
+      id: 0,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: "Hi there! I'm Alex, and I'm really passionate about addressing climate change. How about you?",
         },
       ],
     },
     {
+      id: 1,
       type: 'sent',
       parts: [
         {
+          id: 0,
           type: 'text',
           text:
             "Hey, Alex. Nice to meet you. Well, I have some reservations about the whole climate change thing. I think it's overblown. \n" +
@@ -28,21 +32,26 @@ function Page3() {
       ],
     },
     {
+      id: 2,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: "Thanks for being open to chat! So, here's my perspective: The scientific consensus is pretty clear that human activities, like burning fossil fuels, are causing global warming. The evidence is overwhelming. But I'm curious, what specifically makes you skeptical?",
         },
       ],
     },
     {
+      id: 3,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'rating',
         },
         {
+          id: 1,
           type: 'text',
           text: 'How respectfull is this chat?',
         },
@@ -58,13 +67,9 @@ function Page3() {
     setMessages((prevMessages) => [
       ...prevMessages,
       {
+        id: prevMessages.length,
         type: 'sent',
-        parts: [
-          {
-            type: 'text',
-            text: message,
-          },
-        ],
+        parts: [{ id: 0, text: message, type: 'text' }],
       },
     ]);
     scrollChatToEnd();
@@ -87,12 +92,17 @@ function Page3() {
           setMessages((prevMessages) => [
             ...prevMessages,
             {
+              id: message.id,
               type: message.type,
+              rating: undefined,
               parts: message.parts.map((part) => ({
+                id: part.id,
                 type: part.type,
                 ...(part.text && { text: part.text }),
                 ...(part.style && { style: part.style }),
                 ...(part.btn && { btn: part.btn }),
+                showOnRating: part.showOnRating || false,
+                hideOnRating: part.hideOnRating || false,
               })),
             },
           ]);
@@ -113,6 +123,15 @@ function Page3() {
   useEffect(() => {
     getMessages();
   }, []);
+
+  const handleRating = (rating: number, messageId: number) => {
+    const updatedMessages = messages.map((message) =>
+      message.id === messageId ? { ...message, rating } : message,
+    );
+    setTimeout(() => {
+      setMessages(updatedMessages);
+    }, 1000);
+  };
 
   return (
     <>
@@ -143,23 +162,63 @@ function Page3() {
                         message.type === 'text' ? (
                           <span
                             key={index}
-                            className="msg montserrat-regular"
-                            style={message.style}
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            } msg montserrat-regular`}
+                            style={{
+                              ...message.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                           >
                             {message.text}
                           </span>
                         ) : message.type === 'link' ? (
                           <a
                             key={index}
-                            className="msg montserrat-regular"
-                            style={message.style}
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            } msg montserrat-regular`}
+                            style={{
+                              ...message.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                             href={message.link}
                             target="_blank"
                           >
                             {message.text}
                           </a>
                         ) : message.type === 'button' ? (
-                          <button type="button" style={message.btn?.style}>
+                          <button
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            }`}
+                            type="button"
+                            style={{
+                              ...message.btn?.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
+                          >
                             {message.btn?.link ? (
                               <span
                                 style={message.btn.link.style}
@@ -183,7 +242,20 @@ function Page3() {
                             )}
                           </button>
                         ) : message.type === 'rating' ? (
-                          <Rating />
+                          <div
+                            key={index}
+                            className={
+                              message.hideOnRating && item.rating !== undefined
+                                ? 'hide-with-delay'
+                                : ''
+                            }
+                          >
+                            <Rating
+                              key={index}
+                              messageId={item.id}
+                              onRating={handleRating}
+                            />
+                          </div>
                         ) : null,
                       )}
                       <span className="msg-time">5:20pm</span>
