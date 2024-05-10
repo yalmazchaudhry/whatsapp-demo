@@ -8,36 +8,44 @@ import Header from '../../header';
 function Page1() {
   const MESSAGES: Message[] = [
     {
+      id: 0,
       type: 'sent',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: '#participate',
         },
       ],
     },
     {
+      id: 1,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: 'Welcome! Submit your opinion and participate in a respectful controversy. Max. 600 characters. Question: What should be done about climate change?',
         },
       ],
     },
     {
+      id: 2,
       type: 'sent',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         },
       ],
     },
     {
+      id: 3,
       type: 'received',
       parts: [
         {
+          id: 0,
           type: 'text',
           text: 'Thanks! Now please read the other opinions and rate how much you (dis)agree with them.',
           style: {
@@ -57,7 +65,11 @@ function Page1() {
   const sendMessage = (message: string) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { type: 'sent', parts: [{ text: message, type: 'text' }] },
+      {
+        id: prevMessages.length,
+        type: 'sent',
+        parts: [{ id: 0, text: message, type: 'text' }],
+      },
     ]);
     scrollChatToEnd();
   };
@@ -79,12 +91,17 @@ function Page1() {
           setMessages((prevMessages) => [
             ...prevMessages,
             {
+              id: message.id,
+              rating: undefined,
               type: message.type,
               parts: message.parts.map((part) => ({
+                id: part.id,
                 type: part.type,
                 ...(part.text && { text: part.text }),
                 ...(part.style && { style: part.style }),
                 ...(part.btn && { btn: part.btn }),
+                showOnRating: part.showOnRating || false,
+                hideOnRating: part.hideOnRating || false,
               })),
             },
           ]);
@@ -118,6 +135,15 @@ function Page1() {
     setTextAreaHeight(height);
   };
 
+  const handleRating = (rating: number, messageId: number) => {
+    const updatedMessages = messages.map((message) =>
+      message.id === messageId ? { ...message, rating } : message,
+    );
+    setTimeout(() => {
+      setMessages(updatedMessages);
+    }, 1000);
+  };
+
   return (
     <>
       <Header />
@@ -147,23 +173,63 @@ function Page1() {
                         message.type === 'text' ? (
                           <span
                             key={index}
-                            className="msg montserrat-regular"
-                            style={message.style}
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            } msg montserrat-regular`}
+                            style={{
+                              ...message.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                           >
                             {message.text}
                           </span>
                         ) : message.type === 'link' ? (
                           <a
                             key={index}
-                            className="msg montserrat-regular"
-                            style={message.style}
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            } msg montserrat-regular`}
+                            style={{
+                              ...message.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
                             href={message.link}
                             target="_blank"
                           >
                             {message.text}
                           </a>
                         ) : message.type === 'button' ? (
-                          <button type="button" style={message.btn?.style}>
+                          <button
+                            className={`${
+                              message.showOnRating && item.rating === undefined
+                                ? 'd-none'
+                                : message.showOnRating
+                                  ? 'show-rating-with-delay'
+                                  : ''
+                            }`}
+                            type="button"
+                            style={{
+                              ...message.btn?.style,
+                              ...(message.showOnRating &&
+                              item.rating === undefined
+                                ? { display: 'none !important' }
+                                : {}),
+                            }}
+                          >
                             {message.btn?.link ? (
                               <span
                                 style={message.btn.link.style}
@@ -187,7 +253,20 @@ function Page1() {
                             )}
                           </button>
                         ) : message.type === 'rating' ? (
-                          <Rating />
+                          <div
+                            key={index}
+                            className={
+                              message.hideOnRating && item.rating !== undefined
+                                ? 'hide-with-delay'
+                                : ''
+                            }
+                          >
+                            <Rating
+                              key={index}
+                              messageId={item.id}
+                              onRating={handleRating}
+                            />
+                          </div>
                         ) : null,
                       )}
                       <span className="msg-time">5:20pm</span>

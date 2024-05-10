@@ -1,16 +1,21 @@
 export interface Message {
+  id: number;
   type: 'sent' | 'received';
   parts: MessageParts[];
   timestamp?: number;
   pinned?: boolean;
+  rating?: number;
 }
 
 interface MessageParts {
+  id: number;
   text?: string;
   link?: string;
   btn?: Button;
   style?: Style;
   type: string;
+  showOnRating?: boolean;
+  hideOnRating?: boolean;
 }
 
 interface Style {

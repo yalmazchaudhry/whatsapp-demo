@@ -2,7 +2,6 @@ import { Message } from '../../types/common.ts';
 import pin from '../../assets/icons/pin.png';
 import './index.scss';
 import { useNavigate } from 'react-router-dom';
-import Rating from '../rating';
 
 interface Props {
   messages: Message[];
@@ -98,7 +97,8 @@ function Messages({
                           )}
                         </button>
                       ) : message.type === 'rating' ? (
-                        <Rating />
+                        // <Rating />
+                        ''
                       ) : null,
                     )}
                     <span className="msg-time">5:20pm</span>
